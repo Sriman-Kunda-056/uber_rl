@@ -1,0 +1,394 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-07-13T16:31:16.254800+00:00",
+  "protocol": {
+    "environment": "synthetic single-zone ride-share simulator",
+    "episodes_per_strategy": 300,
+    "steps_per_episode": 144,
+    "minutes_per_step": 10,
+    "seed_start": 7777,
+    "seed_end": 8076,
+    "deterministic_policy": true,
+    "shared_randomness": "Common exogenous RNG seeds; policy actions still change endogenous demand and supply trajectories.",
+    "acceptance_floor": 0.6
+  },
+  "checkpoint": {
+    "path": "checkpoints/best.pt",
+    "sha256": "49a64aaa1a865be291bc4dee01b3a83e0795343481c64a95ce7ca79614bf9ca1",
+    "updates": 25800
+  },
+  "software": {
+    "python": "3.13.9",
+    "gymnasium": "1.2.3",
+    "numpy": "2.4.3",
+    "torch": "2.6.0+cu124"
+  },
+  "strategies": {
+    "SAC (RL)": {
+      "objective_reward": {
+        "mean": 50872.56216358493,
+        "standard_deviation": 1842.9634216146806,
+        "confidence_interval_95": [
+          50664.01121978006,
+          51081.1131073898
+        ]
+      },
+      "simulated_gross_revenue": {
+        "mean": 38110.684153159724,
+        "standard_deviation": 1427.252252681126,
+        "confidence_interval_95": [
+          37949.175356591484,
+          38272.19294972796
+        ]
+      },
+      "acceptance_rate": {
+        "mean": 0.5880086325999557,
+        "standard_deviation": 0.0009820318022414308,
+        "confidence_interval_95": [
+          0.5878975052401819,
+          0.5881197599597295
+        ]
+      },
+      "average_price_multiplier": {
+        "mean": 0.8537787834941237,
+        "standard_deviation": 0.0007774351395913367,
+        "confidence_interval_95": [
+          0.8536908084262481,
+          0.8538667585619993
+        ]
+      },
+      "simulated_rides_served": {
+        "mean": 3729.7492066920627,
+        "standard_deviation": 139.06753599303235,
+        "confidence_interval_95": [
+          3714.0122335412043,
+          3745.486179842921
+        ]
+      },
+      "mean_churn_memory": {
+        "mean": 0.011132629546302812,
+        "standard_deviation": 0.0010140952112875424,
+        "confidence_interval_95": [
+          0.01101787387023154,
+          0.011247385222374083
+        ]
+      },
+      "steps_at_or_above_acceptance_floor": {
+        "mean": 0.031481481481481485,
+        "standard_deviation": 0.042003367285453196,
+        "confidence_interval_95": [
+          0.026728353021292568,
+          0.0362346099416704
+        ]
+      }
+    },
+    "Fixed 0.8×": {
+      "objective_reward": {
+        "mean": 51223.229597762365,
+        "standard_deviation": 1730.193243771472,
+        "confidence_interval_95": [
+          51027.43980089422,
+          51419.01939463051
+        ]
+      },
+      "simulated_gross_revenue": {
+        "mean": 37435.19927153321,
+        "standard_deviation": 1299.2558353377983,
+        "confidence_interval_95": [
+          37288.17463310263,
+          37582.22390996379
+        ]
+      },
+      "acceptance_rate": {
+        "mean": 0.6271477590656646,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          0.6271477590656646,
+          0.6271477590656646
+        ]
+      },
+      "average_price_multiplier": {
+        "mean": 0.800000011920929,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          0.800000011920929,
+          0.800000011920929
+        ]
+      },
+      "simulated_rides_served": {
+        "mean": 3899.4998660109663,
+        "standard_deviation": 135.33914749764355,
+        "confidence_interval_95": [
+          3884.1847997359932,
+          3914.8149322859394
+        ]
+      },
+      "mean_churn_memory": {
+        "mean": 0.0,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          0.0,
+          0.0
+        ]
+      },
+      "steps_at_or_above_acceptance_floor": {
+        "mean": 1.0,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    "Fixed 1.0×": {
+      "objective_reward": {
+        "mean": 19253.684023479942,
+        "standard_deviation": 1330.566394428537,
+        "confidence_interval_95": [
+          19103.116261744337,
+          19404.251785215547
+        ]
+      },
+      "simulated_gross_revenue": {
+        "mean": 30977.360860426135,
+        "standard_deviation": 1766.7017953092331,
+        "confidence_interval_95": [
+          30777.439732034618,
+          31177.281988817653
+        ]
+      },
+      "acceptance_rate": {
+        "mean": 0.4070009711726649,
+        "standard_deviation": 5.560390175747647e-17,
+        "confidence_interval_95": [
+          0.4070009711726649,
+          0.4070009711726649
+        ]
+      },
+      "average_price_multiplier": {
+        "mean": 1.0,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          1.0,
+          1.0
+        ]
+      },
+      "simulated_rides_served": {
+        "mean": 2581.4467383688448,
+        "standard_deviation": 147.22514960910277,
+        "confidence_interval_95": [
+          2564.786644336218,
+          2598.1068324014714
+        ]
+      },
+      "mean_churn_memory": {
+        "mean": 0.1731062597630779,
+        "standard_deviation": 2.7801950878738235e-17,
+        "confidence_interval_95": [
+          0.1731062597630779,
+          0.1731062597630779
+        ]
+      },
+      "steps_at_or_above_acceptance_floor": {
+        "mean": 0.0,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "Fixed 1.2×": {
+      "objective_reward": {
+        "mean": -4224.85966014607,
+        "standard_deviation": 613.7632571031598,
+        "confidence_interval_95": [
+          -4294.313510960684,
+          -4155.405809331457
+        ]
+      },
+      "simulated_gross_revenue": {
+        "mean": 16206.313549933726,
+        "standard_deviation": 1170.5037667153385,
+        "confidence_interval_95": [
+          16073.858579632813,
+          16338.768520234638
+        ]
+      },
+      "acceptance_rate": {
+        "mean": 0.18740051242206032,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          0.18740051242206032,
+          0.18740051242206032
+        ]
+      },
+      "average_price_multiplier": {
+        "mean": 1.2000000476837158,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          1.2000000476837158,
+          1.2000000476837158
+        ]
+      },
+      "simulated_rides_served": {
+        "mean": 1125.438396246716,
+        "standard_deviation": 81.28498056970136,
+        "confidence_interval_95": [
+          1116.2401347857697,
+          1134.6366577076622
+        ]
+      },
+      "mean_churn_memory": {
+        "mean": 0.37222065091478923,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          0.37222065091478923,
+          0.37222065091478923
+        ]
+      },
+      "steps_at_or_above_acceptance_floor": {
+        "mean": 0.0,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "Fixed 1.5×": {
+      "objective_reward": {
+        "mean": -6805.601777491542,
+        "standard_deviation": 367.29639592755524,
+        "confidence_interval_95": [
+          -6847.165277411528,
+          -6764.038277571555
+        ]
+      },
+      "simulated_gross_revenue": {
+        "mean": 8455.255408668103,
+        "standard_deviation": 590.5233998660552,
+        "confidence_interval_95": [
+          8388.431395268517,
+          8522.079422067689
+        ]
+      },
+      "acceptance_rate": {
+        "mean": 0.08527118446904679,
+        "standard_deviation": 1.3900975439369117e-17,
+        "confidence_interval_95": [
+          0.08527118446904679,
+          0.08527118446904679
+        ]
+      },
+      "average_price_multiplier": {
+        "mean": 1.5,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          1.5,
+          1.5
+        ]
+      },
+      "simulated_rides_served": {
+        "mean": 469.7364115926724,
+        "standard_deviation": 32.80685554811418,
+        "confidence_interval_95": [
+          466.0239664038065,
+          473.4488567815383
+        ]
+      },
+      "mean_churn_memory": {
+        "mean": 0.4667542250939687,
+        "standard_deviation": 5.560390175747647e-17,
+        "confidence_interval_95": [
+          0.4667542250939687,
+          0.4667542250939687
+        ]
+      },
+      "steps_at_or_above_acceptance_floor": {
+        "mean": 0.0,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "Fixed 2.0×": {
+      "objective_reward": {
+        "mean": -7843.4673302229185,
+        "standard_deviation": 424.7433160713324,
+        "confidence_interval_95": [
+          -7891.531561125493,
+          -7795.403099320344
+        ]
+      },
+      "simulated_gross_revenue": {
+        "mean": 9225.11911400321,
+        "standard_deviation": 555.8384149245743,
+        "confidence_interval_95": [
+          9162.220076140613,
+          9288.018151865806
+        ]
+      },
+      "acceptance_rate": {
+        "mean": 0.08,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          0.08,
+          0.08
+        ]
+      },
+      "average_price_multiplier": {
+        "mean": 2.0,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          2.0,
+          2.0
+        ]
+      },
+      "simulated_rides_served": {
+        "mean": 384.37996308346703,
+        "standard_deviation": 23.1599339551906,
+        "confidence_interval_95": [
+          381.75916983919217,
+          387.0007563277419
+        ]
+      },
+      "mean_churn_memory": {
+        "mean": 0.472025198102039,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          0.472025198102039,
+          0.472025198102039
+        ]
+      },
+      "steps_at_or_above_acceptance_floor": {
+        "mean": 0.0,
+        "standard_deviation": 0.0,
+        "confidence_interval_95": [
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "comparison_to_strongest_fixed_baseline": {
+    "policy": "SAC (RL)",
+    "strongest_fixed_baseline": "Fixed 0.8×",
+    "paired_objective_reward_difference": {
+      "mean": -350.66743417744124,
+      "standard_deviation": 283.7304829024778,
+      "confidence_interval_95": [
+        -382.77456083092665,
+        -318.5603075239558
+      ]
+    },
+    "policy_win_rate": 0.12,
+    "objective_reward_percent_difference": -0.6845867332675004,
+    "gross_revenue_percent_difference": 1.804411075060508,
+    "served_rides_percent_difference": -4.353139252510141,
+    "acceptance_percentage_point_difference": -3.913912646570883
+  },
+  "interpretation": "Reward is an engineered objective, not dollars or profit. Revenue and ride counts are simulated."
+}
