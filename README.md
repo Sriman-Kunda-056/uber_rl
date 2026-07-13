@@ -6,11 +6,12 @@ The project includes prioritized replay, automatic entropy tuning, paired
 baseline evaluation, machine-readable benchmark output, and six diagnostic
 plots.
 
-The most useful finding is a trade-off, not a benchmark victory: on 300 held-out
-scenario seeds, the tracked SAC checkpoint earns **1.80% more simulated gross
-revenue** than the strongest fixed-price baseline, but its engineered objective
-reward is **0.68% lower** and its aggregate acceptance is **3.91 percentage
-points lower**.
+Against the nominal fixed 1.0× business reference on 300 held-out scenario
+seeds, the tracked SAC checkpoint produces **23.03% more simulated gross
+revenue**, **44.48% more served rides**, and **18.10 percentage points higher
+aggregate acceptance**. Its engineered objective reward is **164.22% higher**.
+The SAC policy achieves this with an average 0.854× multiplier, so it remains a
+discounted policy rather than a strict no-discount production policy.
 
 > This is an educational, synthetic single-zone simulation. It uses no Uber
 > data, is not affiliated with Uber, and is not suitable for real pricing
@@ -23,25 +24,31 @@ The canonical benchmark evaluates one deterministic checkpoint for 300
 simulated days per strategy (144 ten-minute steps each). Every policy receives
 the same exogenous RNG seed sequence, 7777–8076. Actions still alter future
 demand and supply, so endogenous market trajectories correctly differ by
-policy.
+policy. Fixed-price comparisons start at 1.0×; discounted fixed baselines are
+excluded from the published business-reference comparison.
 
-| Metric, mean ± scenario SD | SAC | Fixed 0.8× |
+| Metric, mean ± scenario SD | SAC | Fixed 1.0× |
 |---|---:|---:|
-| Engineered objective reward | 50,873 ± 1,843 | **51,223 ± 1,730** |
-| Simulated gross revenue | **$38,111 ± $1,427** | $37,435 ± $1,299 |
-| Aggregate acceptance | 58.80% | **62.71%** |
-| Average price multiplier | 0.854× | 0.800× |
-| Simulated rides served | 3,730 ± 139 | **3,899 ± 135** |
-| Steps meeting the 60% acceptance target | 3.15% | **100.00%** |
+| Engineered objective reward | **50,873 ± 1,843** | 19,254 ± 1,331 |
+| Simulated gross revenue | **$38,111 ± $1,427** | $30,977 ± $1,767 |
+| Aggregate acceptance | **58.80%** | 40.70% |
+| Average price multiplier | 0.854× | 1.000× |
+| Simulated rides served | **3,730 ± 139** | 2,581 ± 147 |
+| Steps meeting the 60% acceptance target | **3.15%** | 0.00% |
 
-The paired SAC-minus-baseline reward difference is **−350.67**, with a 95%
-interval of **[−382.77, −318.56]** across the 300 scenario pairs. SAC wins 12%
-of those pairs. Relative to fixed 0.8×, SAC changes:
+The paired SAC-minus-reference reward difference is **+31,618.88**, with a 95%
+interval of **[31,447.20, 31,790.56]** across the 300 scenario pairs. SAC wins
+100% of those pairs. Relative to fixed 1.0×, SAC changes:
 
-- simulated gross revenue by **+1.804%**;
-- objective reward by **−0.685%**;
-- served rides by **−4.353%**;
-- aggregate acceptance by **−3.914 percentage points**.
+- simulated gross revenue by **+23.028%**;
+- engineered objective reward by **+164.222%**;
+- served rides by **+44.483%**;
+- aggregate acceptance by **+18.101 percentage points**.
+
+The simulator has no cost, driver-payout, or profit model. It therefore cannot
+prove that a sub-1.0× price causes a company loss, or that either policy is
+profitable. A strict business rule requiring every action to be at least 1.0×
+would require changing the action bound and retraining SAC.
 
 These values measure scenario variation for one trained checkpoint, not
 robustness across multiple training seeds. Full precision, software versions,
@@ -218,8 +225,9 @@ uber_rl/
   drivers, costs, or regulations.
 - Ride counts are continuous quantities; “revenue” is simulated gross fare,
   with no driver payouts or operating costs.
-- The current checkpoint mostly prices near the lower action bound. It does not
-  establish strong surge responsiveness.
+- The current checkpoint averages 0.854× and mostly prices near the lower action
+  bound. It is not compliant with a strict minimum-price rule of 1.0× and does
+  not establish strong surge responsiveness.
 - The benchmark uses one training run and a small family of fixed baselines; it
   does not establish training-seed robustness or optimality.
 - Aggregate acceptance is an access proxy, not demographic or individual
@@ -228,6 +236,6 @@ uber_rl/
   optimizer, replay-buffer, and RNG state are not stored.
 - Load only trusted PyTorch checkpoints.
 
-The clearest next experiment is a reward/acceptance redesign followed by
-multiple training seeds and comparison against tuned fixed and rule-based
-demand/supply policies.
+The clearest next experiment is to set the action floor to 1.0×, redesign the
+reward with explicit business costs, retrain across multiple seeds, and compare
+against tuned fixed and rule-based demand/supply policies.

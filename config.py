@@ -41,6 +41,7 @@ class Config:
     eval_episodes:  int   = 15
     benchmark_episodes: int = 300      # held-out policy comparison
     benchmark_seed: int = 7_777        # first common exogenous seed
+    benchmark_reference_price: float = 1.0  # minimum business reference
     save_freq:      int   = 500        # checkpoint every N episodes
 
     # ── Logging ───────────────────────────────────────────────────────────────

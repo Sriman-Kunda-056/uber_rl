@@ -24,7 +24,9 @@ class BenchmarkTests(unittest.TestCase):
     def test_build_and_save_benchmark(self) -> None:
         results = {
             "SAC (RL)": [12.0, 18.0],
-            "Fixed 0.8x": [10.0, 10.0],
+            # Deliberately higher than 1.0x: an explicit business reference
+            # must not be replaced by a discounted policy with higher reward.
+            "Fixed 0.8x": [100.0, 100.0],
             "Fixed 1.0x": [15.0, 11.0],
         }
         detail = {
@@ -57,12 +59,13 @@ class BenchmarkTests(unittest.TestCase):
                 checkpoint_path=str(checkpoint),
                 checkpoint_updates=42,
                 acceptance_floor=0.60,
+                reference_label="Fixed 1.0x",
             )
 
-            comparison = summary["comparison_to_strongest_fixed_baseline"]
+            comparison = summary["comparison_to_business_reference"]
             self.assertEqual(comparison["policy"], "SAC (RL)")
             self.assertEqual(
-                comparison["strongest_fixed_baseline"], "Fixed 1.0x"
+                comparison["business_reference"], "Fixed 1.0x"
             )
             paired = comparison["paired_objective_reward_difference"]
             self.assertAlmostEqual(paired["mean"], 2.0)
@@ -116,6 +119,8 @@ class BenchmarkTests(unittest.TestCase):
         self.assertEqual(protocol["seed_end"], 501)
         self.assertTrue(protocol["deterministic_policy"])
         self.assertEqual(protocol["acceptance_floor"], 0.60)
+        self.assertEqual(protocol["business_reference"], "Fixed 1.0x")
+        self.assertIn("below 1.0x", protocol["discount_baseline_policy"])
         self.assertIn("Common exogenous RNG seeds", protocol["shared_randomness"])
 
         checkpoint_metadata = summary["checkpoint"]

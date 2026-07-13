@@ -233,7 +233,7 @@ def plot_strategy_comparison(results: dict, save_dir="results"):
               for i, l in enumerate(labels)}
 
     fig, axes = plt.subplots(1, 3, figsize=(18, 6))
-    fig.suptitle("SAC vs Constant-Price Baselines\n(Common exogenous seeds per episode)",
+    fig.suptitle("SAC vs Fixed Baselines ≥ 1.0×\n(Common exogenous seeds per episode)",
                  fontsize=14, fontweight="bold")
 
     # (1) Cumulative reward

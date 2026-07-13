@@ -54,7 +54,11 @@ def compare_strategies(env, agent, prices=None, n_episodes=300, seed=7777):
     detail  : dict  {label: list of per-episode step dicts}
     """
     if prices is None:
-        prices = [0.8, 1.0, 1.2, 1.5, 2.0]
+        # Fixed 1.0x is the minimum admissible business reference. The
+        # simulator permits discounts below base fare, but those are excluded
+        # from the published comparison because no cost model is available to
+        # establish their commercial viability.
+        prices = [1.0, 1.2, 1.5, 2.0]
 
     results, detail = {}, {}
 

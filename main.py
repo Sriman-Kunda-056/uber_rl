@@ -49,6 +49,7 @@ def _save_benchmark(cfg, ckpt_path, agent, results, detail):
         seed=cfg.benchmark_seed,
         checkpoint_path=ckpt_path,
         checkpoint_updates=agent.updates,
+        reference_label=f'Fixed {cfg.benchmark_reference_price:.1f}×',
     )
     path = os.path.join(cfg.results_dir, 'benchmark.json')
     save_benchmark(summary, path)

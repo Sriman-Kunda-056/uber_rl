@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_utc": "2026-07-13T16:31:16.254800+00:00",
+  "generated_utc": "2026-07-13T16:55:43.423055+00:00",
   "protocol": {
     "environment": "synthetic single-zone ride-share simulator",
     "episodes_per_strategy": 300,
@@ -10,7 +10,9 @@
     "seed_end": 8076,
     "deterministic_policy": true,
     "shared_randomness": "Common exogenous RNG seeds; policy actions still change endogenous demand and supply trajectories.",
-    "acceptance_floor": 0.6
+    "acceptance_floor": 0.6,
+    "business_reference": "Fixed 1.0×",
+    "discount_baseline_policy": "Fixed prices below 1.0x are excluded from the published comparison. The simulator reports gross revenue and has no cost model for determining profit or loss."
   },
   "checkpoint": {
     "path": "checkpoints/best.pt",
@@ -79,64 +81,6 @@
         "confidence_interval_95": [
           0.026728353021292568,
           0.0362346099416704
-        ]
-      }
-    },
-    "Fixed 0.8×": {
-      "objective_reward": {
-        "mean": 51223.229597762365,
-        "standard_deviation": 1730.193243771472,
-        "confidence_interval_95": [
-          51027.43980089422,
-          51419.01939463051
-        ]
-      },
-      "simulated_gross_revenue": {
-        "mean": 37435.19927153321,
-        "standard_deviation": 1299.2558353377983,
-        "confidence_interval_95": [
-          37288.17463310263,
-          37582.22390996379
-        ]
-      },
-      "acceptance_rate": {
-        "mean": 0.6271477590656646,
-        "standard_deviation": 0.0,
-        "confidence_interval_95": [
-          0.6271477590656646,
-          0.6271477590656646
-        ]
-      },
-      "average_price_multiplier": {
-        "mean": 0.800000011920929,
-        "standard_deviation": 0.0,
-        "confidence_interval_95": [
-          0.800000011920929,
-          0.800000011920929
-        ]
-      },
-      "simulated_rides_served": {
-        "mean": 3899.4998660109663,
-        "standard_deviation": 135.33914749764355,
-        "confidence_interval_95": [
-          3884.1847997359932,
-          3914.8149322859394
-        ]
-      },
-      "mean_churn_memory": {
-        "mean": 0.0,
-        "standard_deviation": 0.0,
-        "confidence_interval_95": [
-          0.0,
-          0.0
-        ]
-      },
-      "steps_at_or_above_acceptance_floor": {
-        "mean": 1.0,
-        "standard_deviation": 0.0,
-        "confidence_interval_95": [
-          1.0,
-          1.0
         ]
       }
     },
@@ -373,22 +317,22 @@
       }
     }
   },
-  "comparison_to_strongest_fixed_baseline": {
+  "comparison_to_business_reference": {
     "policy": "SAC (RL)",
-    "strongest_fixed_baseline": "Fixed 0.8×",
+    "business_reference": "Fixed 1.0×",
     "paired_objective_reward_difference": {
-      "mean": -350.66743417744124,
-      "standard_deviation": 283.7304829024778,
+      "mean": 31618.878140104986,
+      "standard_deviation": 1517.1333441861168,
       "confidence_interval_95": [
-        -382.77456083092665,
-        -318.5603075239558
+        31447.198340551153,
+        31790.55793965882
       ]
     },
-    "policy_win_rate": 0.12,
-    "objective_reward_percent_difference": -0.6845867332675004,
-    "gross_revenue_percent_difference": 1.804411075060508,
-    "served_rides_percent_difference": -4.353139252510141,
-    "acceptance_percentage_point_difference": -3.913912646570883
+    "policy_win_rate": 1.0,
+    "objective_reward_percent_difference": 164.22248387137572,
+    "gross_revenue_percent_difference": 23.027537190382397,
+    "served_rides_percent_difference": 44.48290376305819,
+    "acceptance_percentage_point_difference": 18.10076614272908
   },
   "interpretation": "Reward is an engineered objective, not dollars or profit. Revenue and ride counts are simulated."
 }

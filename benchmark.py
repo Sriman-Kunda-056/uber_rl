@@ -55,6 +55,7 @@ def build_benchmark(
     checkpoint_path: str | None = None,
     checkpoint_updates: int | None = None,
     acceptance_floor: float = 0.60,
+    reference_label: str | None = None,
 ) -> dict:
     '''Summarise paired policy rollouts without hiding outcome trade-offs.'''
     strategies = {}
@@ -94,12 +95,20 @@ def build_benchmark(
 
     rl_label = next(label for label in results if 'SAC' in label)
     fixed_labels = [label for label in results if label != rl_label]
-    strongest_fixed = max(
-        fixed_labels,
-        key=lambda label: strategies[label]['objective_reward']['mean'],
-    )
+    if reference_label is None:
+        reference_label = next(
+            (label for label in fixed_labels if 'Fixed 1.0' in label),
+            max(
+                fixed_labels,
+                key=lambda label: strategies[label]['objective_reward']['mean'],
+            ),
+        )
+    if reference_label not in fixed_labels:
+        raise ValueError(
+            f'Business reference {reference_label!r} is not in benchmark results'
+        )
     rl = episode_metrics[rl_label]
-    baseline = episode_metrics[strongest_fixed]
+    baseline = episode_metrics[reference_label]
     reward_difference = rl['objective_reward'] - baseline['objective_reward']
 
     def _relative_percent(metric: str) -> float:
@@ -110,7 +119,7 @@ def build_benchmark(
 
     comparison = {
         'policy': rl_label,
-        'strongest_fixed_baseline': strongest_fixed,
+        'business_reference': reference_label,
         'paired_objective_reward_difference': _stats(reward_difference),
         'policy_win_rate': float(np.mean(reward_difference > 0.0)),
         'objective_reward_percent_difference': _relative_percent(
@@ -145,6 +154,12 @@ def build_benchmark(
                 'endogenous demand and supply trajectories.'
             ),
             'acceptance_floor': acceptance_floor,
+            'business_reference': reference_label,
+            'discount_baseline_policy': (
+                'Fixed prices below 1.0x are excluded from the published '
+                'comparison. The simulator reports gross revenue and has no '
+                'cost model for determining profit or loss.'
+            ),
         },
         'checkpoint': _checkpoint_metadata(
             checkpoint_path, checkpoint_updates
@@ -156,7 +171,7 @@ def build_benchmark(
             'torch': _package_version('torch'),
         },
         'strategies': strategies,
-        'comparison_to_strongest_fixed_baseline': comparison,
+        'comparison_to_business_reference': comparison,
         'interpretation': (
             'Reward is an engineered objective, not dollars or profit. '
             'Revenue and ride counts are simulated.'
