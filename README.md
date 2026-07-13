@@ -129,6 +129,64 @@ objective. Objective reward is not revenue, profit, or a real currency amount.
 
 The agent is implemented directly in PyTorch rather than through an RL library:
 
+### Model architecture
+
+```mermaid
+flowchart TB
+    ENV["Custom Gymnasium environment<br/>12-D observation"] --> STATE["State s"]
+
+    subgraph ACTOR["Squashed-Gaussian actor"]
+        TRUNK["Actor trunk<br/>12 → 256 → 256 → 256 latent<br/>LayerNorm + ReLU after first two layers"]
+        TRUNK --> MEAN["Mean head<br/>256 → 1"]
+        TRUNK --> LOGSTD["Log-std head<br/>256 → 1<br/>clipped to [-20, 2]"]
+        MEAN --> SAMPLE["Reparameterized<br/>Gaussian sample"]
+        LOGSTD --> SAMPLE
+        SAMPLE --> ACTION["tanh + affine scaling<br/>price multiplier [0.8×, 3.0×]"]
+    end
+
+    STATE --> TRUNK
+    ACTION -->|"continuous price action"| ENV
+    ENV --> TRANSITION["Transition tuple<br/>(state, action, reward, next state, done)"]
+    TRANSITION --> PER["Prioritized replay buffer<br/>capacity 200,000"]
+
+    PER -->|"batch 256 + IS weights"| INPUT["Concatenate replay state + action<br/>13-D critic input"]
+    PER --> NEXTSTATE["Next state"]
+    NEXTSTATE --> NEXTACTION["Same actor samples next action<br/>(s′, a′)"]
+
+    subgraph CRITICS["Twin critics"]
+        Q1["Q1 MLP<br/>13 → 256 → 256 → 1"]
+        Q2["Q2 MLP<br/>13 → 256 → 256 → 1"]
+    end
+    INPUT --> Q1
+    INPUT --> Q2
+
+    subgraph TARGETS["Bellman target"]
+        TQ1["Target Q1"]
+        TQ2["Target Q2"]
+        TQ1 --> TMIN["min target Q − α log π"]
+        TQ2 --> TMIN
+    end
+    NEXTACTION --> TQ1
+    NEXTACTION --> TQ2
+
+    PER -->|"reward + done"| BACKUP["Bellman backup<br/>r + γ(1 − done) × soft target"]
+    TMIN --> BACKUP
+    BACKUP --> CLOSS["Weighted twin-critic loss"]
+    Q1 --> CLOSS
+    Q2 --> CLOSS
+    CLOSS --> TD["TD errors"]
+    TD -->|"update priorities"| PER
+
+    STATE --> POLICYINPUT["State + current policy action"]
+    ACTION --> POLICYINPUT
+    POLICYINPUT --> QPOLICY["Twin critics reused<br/>min Q(s, π(s))"]
+    QPOLICY --> ALOSS["Actor objective<br/>α log π − min Q"]
+    ALPHA["Automatic entropy temperature α<br/>target entropy = -1"] --> ALOSS
+    ALPHA --> TMIN
+    Q1 -. "Polyak update τ = 0.005" .-> TQ1
+    Q2 -. "Polyak update τ = 0.005" .-> TQ2
+```
+
 - squashed-Gaussian actor for bounded continuous prices;
 - twin critics and minimum-Q targets;
 - Polyak target updates;
